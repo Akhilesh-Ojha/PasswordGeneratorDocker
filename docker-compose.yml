@@ -1,0 +1,39 @@
+version: "3"
+services: 
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    depends_on:
+      - api
+      - client
+    ports: 
+      - "4000:80"
+  mongo:
+    image: mongo
+    ports: 
+      - "27017:27017"
+  api:
+    build: 
+      dockerfile: Dockerfile
+      context: ./password-server
+    volumes:
+      - /app/node_modules
+      - ./password-server:/app
+    expose:
+      - '5000'
+    # ports: 
+    #   - "5000:5000"
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./password-validator
+    volumes:
+      - /app/node_modules
+      - ./password-validator:/app
+    expose:
+      - '3000'
+    stdin_open: true
+    # ports:
+    #   - "3000:3000"
