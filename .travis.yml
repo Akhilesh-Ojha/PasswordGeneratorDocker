@@ -3,10 +3,10 @@ services:
     - docker
 
 before-install:
-    - docker build -t akhileshojha/passwordDocker -f ./password-validator/Dockerfile.dev ./password-validator
+    - docker build -t akhileshojha/passworddocker -f ./password-validator/Dockerfile.dev ./password-validator
 
 script:
-    - docker run -e CI=true akhileshojha/passwordDocker npm test
+    - docker run -e CI=true akhileshojha/passworddocker npm test
 
 after_success:
     - docker build -t akhileshojha/dock-password-validator ./password-validator
