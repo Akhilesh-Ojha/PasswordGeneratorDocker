@@ -15,7 +15,7 @@ after_success:
 
     #Add docker pass and userid from travis to cli
 
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - echo "$DOCKERPASSWORD" | docker login -u "$DOCKERID" --password-stdin
 
     #push image in docker hub
     - docker push akhileshojha/dock-password-validator
