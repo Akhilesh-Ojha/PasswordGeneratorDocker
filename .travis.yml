@@ -1,0 +1,20 @@
+sudo required
+services:
+    - docker
+
+before-install:
+    - docker build -t akhileshojha/passwordDocker -f ./password-validator/Dockerfile.dev ./password-validator
+
+script:
+    - docker run -e CI=true akhileshojha/passwordDocker npm test
+
+after_success:
+    - docker build -t akhileshojha/dock-password-validator ./password-validator
+    - docker build -t akhileshojha/dock-password-server ./password-server
+    - docker build -t akhileshojha/dock-nginx ./nginx
+
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    - docker push akhileshojha/dock-password-validator
+    - docker push akhileshojha/dock-password-server
+    - docker push akhileshojha/dock-nginx
